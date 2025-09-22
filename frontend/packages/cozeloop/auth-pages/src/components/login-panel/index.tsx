@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { I18n } from '@cozeloop/i18n-adapter';
-import { Input, Button, Typography, Divider } from '@coze-arch/coze-design';
+import { Input, Button, Typography, Divider, Row, Space } from '@coze-arch/coze-design';
 
 import loopBanner from '@/assets/loop-banner.png';
 import { ReactComponent as IconGithub } from '@/assets/github.svg';
@@ -12,20 +12,21 @@ import { SwitchLang } from '../switch-lng';
 
 import s from './index.module.less';
 import { userService } from '@cozeloop/account/src/services/user-service';
+import { redirect } from 'react-router-dom';
 
 interface Props {
   loading?: boolean;
   onLogin?: (email: string, password: string) => void;
   onRegister?: (email: string, password: string) => void;
-  onGetOAuthProvider?: void
+  providers?: any
 }
 
 const { Text } = Typography;
 
-export function LoginPanel({ loading, onLogin, onRegister,onGetOAuthProvider }: Props) {
+export function LoginPanel({ loading, onLogin, onRegister,providers }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [providers,setProviders] = useState({})
+
   // const [consent, setConsent] = useState(false);
   const canSubmit = Boolean(email && password);
 
@@ -37,18 +38,16 @@ export function LoginPanel({ loading, onLogin, onRegister,onGetOAuthProvider }: 
     onLogin?.(email, password);
   };
 
-  const initProviders = ()=>{
-    userService.getOAuthProviders().then(res=>{
-      debugger
-      setProviders(res)
-    })
-  }
+
 
   const onJumpOAuthProvider = (provider)=>{
-
+    console.log(provider)
+    window.location.href = `${provider.authUrl}?response_type=code&client_id=${provider.clientId}&redirect_uri=${provider.redirectUrl}
+    
+    `;
   }
 
-  initProviders()
+
 
   return (
     <div className={s.container}>
@@ -93,7 +92,14 @@ export function LoginPanel({ loading, onLogin, onRegister,onGetOAuthProvider }: 
           </Button>
         </div>
         {Object.keys(providers).length > 0 ?
-         <><Divider margin="30px">其他方式</Divider></>
+         <><Divider margin="30px">其他方式</Divider>
+          <Space align='center'> {Object.keys(providers).map?.(e=>{
+          return <Button style={{width:"20%"}} onClick={()=>{
+            onJumpOAuthProvider(providers[e])
+          }}>{e}</Button>
+         })}
+         </Space>
+         </>
          :<></>}
         
       </div>

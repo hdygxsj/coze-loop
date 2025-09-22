@@ -50,6 +50,32 @@ image%:
 
 compose%:
 	@case "$*" in \
+	  -up) \
+	    docker volume rm ${COZE_LOOP_NGINX_DATA_VOLUME_NAME} 2>/dev/null || true; \
+	    docker compose \
+	      -f $(DOCKER_COMPOSE_DIR)/docker-compose.yml \
+	      --env-file $(DOCKER_COMPOSE_DIR)/.env \
+	      --profile "*" \
+	      up ;; \
+	  -restart-*) \
+	    svc="$*"; \
+	    svc="$${svc#-restart-}"; \
+	    docker compose \
+	      -f $(DOCKER_COMPOSE_DIR)/docker-compose.yml \
+	      --env-file $(DOCKER_COMPOSE_DIR)/.env \
+	      restart "$$svc" ;; \
+	  -down) \
+	    docker compose \
+	      -f $(DOCKER_COMPOSE_DIR)/docker-compose.yml \
+	      --env-file $(DOCKER_COMPOSE_DIR)/.env \
+	      --profile "*" \
+	      down ;; \
+	  -down-v) \
+	    docker compose \
+	      -f $(DOCKER_COMPOSE_DIR)/docker-compose.yml \
+	      --env-file $(DOCKER_COMPOSE_DIR)/.env \
+	      --profile "*" \
+	      down -v ;; \
 	  -up-dev) \
 	    docker volume rm ${COZE_LOOP_NGINX_DATA_VOLUME_NAME} 2>/dev/null || true; \
 	    docker compose \
@@ -110,32 +136,6 @@ compose%:
 	      --env-file $(DOCKER_COMPOSE_DIR)/.env \
 	      --profile "*" \
 	      down -v ;; \
-	  -up) \
-        docker volume rm ${COZE_LOOP_NGINX_DATA_VOLUME_NAME} 2>/dev/null || true; \
-        docker compose \
-          -f $(DOCKER_COMPOSE_DIR)/docker-compose.yml \
-          --env-file $(DOCKER_COMPOSE_DIR)/.env \
-          --profile "*" \
-          up ;; \
-      -restart-*) \
-        svc="$*"; \
-        svc="$${svc#-restart-}"; \
-        docker compose \
-          -f $(DOCKER_COMPOSE_DIR)/docker-compose.yml \
-          --env-file $(DOCKER_COMPOSE_DIR)/.env \
-          restart "$$svc" ;; \
-      -down) \
-        docker compose \
-          -f $(DOCKER_COMPOSE_DIR)/docker-compose.yml \
-          --env-file $(DOCKER_COMPOSE_DIR)/.env \
-          --profile "*" \
-          down ;; \
-      -down-v) \
-        docker compose \
-          -f $(DOCKER_COMPOSE_DIR)/docker-compose.yml \
-          --env-file $(DOCKER_COMPOSE_DIR)/.env \
-          --profile "*" \
-          down -v ;; \
 	  -help|*) \
       	echo "Usage:"; \
       	echo "  # Stable profile"; \

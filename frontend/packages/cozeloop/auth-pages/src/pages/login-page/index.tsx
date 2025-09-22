@@ -1,14 +1,15 @@
 // Copyright (c) 2025 coze-dev Authors
 // SPDX-License-Identifier: Apache-2.0
-import {useNavigate} from 'react-router-dom';
-import {useEffect, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-import {I18n} from '@cozeloop/i18n-adapter';
-import {$notification} from '@cozeloop/api-schema';
-import {useLogin, useLoginStatus, useRegister} from '@cozeloop/account';
-import {Toast} from '@coze-arch/coze-design';
+import { I18n } from '@cozeloop/i18n-adapter';
+import { $notification } from '@cozeloop/api-schema';
+import { useLogin, useLoginStatus, useRegister, userService } from '@cozeloop/account';
+import { Toast } from '@coze-arch/coze-design';
 
-import {LoginPanel} from '@/components';
+import { LoginPanel } from '@/components';
+import { debug } from 'console';
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -53,12 +54,23 @@ export function LoginPage() {
       $notification.removeListener('apiError', onApiError);
     };
   }, []);
-
+  const [providers, setProviders] = useState({})
+  const initProviders = () => {
+    debugger
+    if(providers && Object.keys(providers).length>0){
+      return
+    }
+     userService.getOAuthProviders().then(res=>{
+      debugger
+      setProviders(res.providers)
+    })
+  }
+  initProviders()
   useEffect(() => {
     loginStatus === 'logined' && navigate('/');
   }, [loginStatus]);
 
   return (
-    <LoginPanel onLogin={onLogin} onRegister={onRegister} loading={loading} />
+    <LoginPanel onLogin={onLogin} onRegister={onRegister} loading={loading} providers={providers} />
   );
 }
