@@ -27,3 +27,22 @@ infra:
     server_ids:
       - 1
   log_level: "info"
+  oauth:
+    github:
+      mapping:
+        mail: mail
+      clientId: Ov23lilpja29OqVSsyoN
+      clientSecret: 7102ca0ae34b4d094041d29f7d7cddca811d2486
+      authUrl: https://github.com/login/oauth/authorize
+      tokenUrl: https://github.com/login/oauth/access_token
+      userInfoUrl: https://api.github.com/user
+      redirectURL: http://localhost:8080/api/v1/auth/callback
+    google:
+      mapping:
+        mail: mail
+      clientId: Ov23lilpja29OqVSsyoN
+      clientSecret: 7102ca0ae34b4d094041d29f7d7cddca811d2486
+      authUrl: https://github.com/login/oauth/authorize
+      tokenUrl: https://github.com/login/oauth/access_token
+      userInfoUrl: https://api.github.com/user
+      redirectURL: http://localhost:8080/api/v1/auth/callback

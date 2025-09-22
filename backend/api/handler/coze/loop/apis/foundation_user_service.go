@@ -7,10 +7,15 @@ package apis
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol"
 	"github.com/cloudwego/kitex/client/callopt"
+	"github.com/coze-dev/coze-loop/backend/kitex_gen/coze/loop/foundation/auth"
+	"github.com/coze-dev/coze-loop/backend/modules/data/domain/component/conf"
+	"github.com/coze-dev/coze-loop/backend/pkg/conf/viper"
+	"github.com/coze-dev/coze-loop/backend/pkg/logs"
 
 	"github.com/coze-dev/coze-loop/backend/infra/middleware/session"
 	"github.com/coze-dev/coze-loop/backend/kitex_gen/coze/loop/foundation/user"
@@ -100,4 +105,33 @@ func ModifyUserProfile(ctx context.Context, c *app.RequestContext) {
 // @router /api/foundation/v1/users/session [GET]
 func GetUserInfoByToken(ctx context.Context, c *app.RequestContext) {
 	invokeAndRender(ctx, c, localUserClient.GetUserInfoByToken)
+}
+
+func LoginByOAuth(ctx context.Context, c *app.RequestContext) {
+	code := c.Query("code")
+	logs.CtxInfo(ctx, "code: %s", code)
+	c.Redirect(302, []byte("https://www.baidu.com"))
+}
+
+func GetOauthProviders(ctx context.Context, c *app.RequestContext) {
+	cfgFactory := viper.NewFileConfigLoaderFactory(viper.WithFactoryConfigPath("conf"))
+	loader, err := cfgFactory.NewConfigLoader("oauth.yaml")
+	if err != nil {
+		c.Error(err)
+		return
+	}
+
+	// Step 1: 先加载 oauth 下的内容到 map
+	providersMap := make(map[string]conf.OauthProperties)
+	if err := loader.UnmarshalKey(ctx, "oauth", &providersMap); err != nil {
+		c.Error(fmt.Errorf("failed to unmarshal oauth config: %w", err))
+		return
+	}
+
+	// Step 2: 包装成你的响应结构体
+	response := &auth.OAuthProviderResponse{
+		Providers: providersMap,
+	}
+
+	c.JSON(200, response)
 }

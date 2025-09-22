@@ -22,6 +22,16 @@ type IConfig interface {
 	GetTagSpec() *TagSpec
 }
 
+type OauthProperties struct {
+	ClientID     string            `mapstructure:"clientId" json:"clientId"`
+	ClientSecret string            `mapstructure:"clientSecret" json:"clientSecret"`
+	AuthURL      string            `mapstructure:"authUrl" json:"authUrl"`
+	TokenURL     string            `mapstructure:"tokenUrl" json:"tokenUrl"`
+	UserInfoURL  string            `mapstructure:"userInfoUrl" json:"userInfoUrl"`
+	RedirectURL  string            `mapstructure:"redirectURL" json:"redirectUrl"`
+	Mapping      map[string]string `mapstructure:"mapping" json:"mapping"` // ✅ 简单起见用 map
+}
+
 type DatasetFeature struct {
 	Feature           *entity.DatasetFeatures                            `mapstructure:"feature"`
 	FeatureByCategory map[entity.DatasetCategory]*entity.DatasetFeatures `mapstructure:"feature_by_category"` // key: check [mdataset.DatasetCategory] enums

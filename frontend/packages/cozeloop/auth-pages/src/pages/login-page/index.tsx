@@ -1,14 +1,14 @@
 // Copyright (c) 2025 coze-dev Authors
 // SPDX-License-Identifier: Apache-2.0
-import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import {useNavigate} from 'react-router-dom';
+import {useEffect, useState} from 'react';
 
-import { I18n } from '@cozeloop/i18n-adapter';
-import { $notification } from '@cozeloop/api-schema';
-import { useLogin, useLoginStatus, useRegister } from '@cozeloop/account';
-import { Toast } from '@coze-arch/coze-design';
+import {I18n} from '@cozeloop/i18n-adapter';
+import {$notification} from '@cozeloop/api-schema';
+import {useLogin, useLoginStatus, useRegister} from '@cozeloop/account';
+import {Toast} from '@coze-arch/coze-design';
 
-import { LoginPanel } from '@/components';
+import {LoginPanel} from '@/components';
 
 export function LoginPage() {
   const navigate = useNavigate();

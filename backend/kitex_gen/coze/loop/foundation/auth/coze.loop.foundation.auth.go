@@ -8,6 +8,7 @@ import (
 	"github.com/apache/thrift/lib/go/thrift"
 	"github.com/coze-dev/coze-loop/backend/kitex_gen/base"
 	"github.com/coze-dev/coze-loop/backend/kitex_gen/coze/loop/foundation/domain/auth"
+	"github.com/coze-dev/coze-loop/backend/modules/data/domain/component/conf"
 )
 
 // 批量鉴权函数，支持服务端和前端调用
@@ -17,6 +18,10 @@ type MCheckPermissionRequest struct {
 	// 空间ID
 	SpaceID *int64     `thrift:"space_id,2,optional" frugal:"2,optional,i64" json:"space_id" form:"space_id" `
 	Base    *base.Base `thrift:"Base,255,optional" frugal:"255,optional,base.Base" form:"Base" json:"Base,omitempty" query:"Base"`
+}
+
+type OAuthProviderResponse struct {
+	Providers map[string]conf.OauthProperties `thrift:"providers,1,optional" frugal:"1,optional,map<string,conf.OauthProperties>" form:"providers" json:"providers" query:"providers"`
 }
 
 func NewMCheckPermissionRequest() *MCheckPermissionRequest {

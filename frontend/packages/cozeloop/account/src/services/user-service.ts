@@ -1,6 +1,7 @@
 // Copyright (c) 2025 coze-dev Authors
 // SPDX-License-Identifier: Apache-2.0
 import {
+   GetOAuthProviders,
   type ModifyUserProfileRequest,
   type ResetPasswordRequest,
 } from '@cozeloop/api-schema/foundation';
@@ -51,4 +52,9 @@ export const userService = (() => ({
 
     return resp.user_info;
   },
+  async getOAuthProviders(){
+  return await FoundationApi.GetOAuthProviders({})
+}
+
 }))();
+

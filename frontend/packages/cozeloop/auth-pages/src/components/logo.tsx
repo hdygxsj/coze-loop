@@ -9,7 +9,7 @@ interface Props {
 export function Logo({ className }: Props) {
   return (
     <div className={className}>
-      <LogoIcon />
+      {/* <LogoIcon /> */}
     </div>
   );
 }

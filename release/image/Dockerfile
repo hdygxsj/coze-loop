@@ -34,8 +34,9 @@ WORKDIR /coze-loop
 COPY ./frontend/ /coze-loop/src/frontend/
 COPY ./common/ /coze-loop/src/common/
 COPY ./rush.json /coze-loop/src/rush.json
-RUN mkdir -p /coze-loop/resources && \
+RUN rm -rf /coze-loop/src/common/temp && mkdir -p /coze-loop/resources && \
     sh /coze-loop/src/frontend/apps/cozeloop/build-artifact.sh /coze-loop/resources
+
 
 # Final minimal image (coze-loop)
 FROM alpine:3.22.0

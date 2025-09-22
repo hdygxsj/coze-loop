@@ -1,16 +1,16 @@
 // Copyright (c) 2025 coze-dev Authors
 // SPDX-License-Identifier: Apache-2.0
-import { useEffect, useState, type ReactNode } from 'react';
+import {type ReactNode, useEffect, useState} from 'react';
 
 import cls from 'classnames';
-import { useRequest } from 'ahooks';
-import { I18n } from '@cozeloop/i18n-adapter';
-import { type ModifyUserProfileRequest } from '@cozeloop/api-schema/foundation';
-import { userService, useUserStore } from '@cozeloop/account';
-import { CozAvatar, Input } from '@coze-arch/coze-design';
+import {useRequest} from 'ahooks';
+import {I18n} from '@cozeloop/i18n-adapter';
+import {type ModifyUserProfileRequest} from '@cozeloop/api-schema/foundation';
+import {userService, useUserStore} from '@cozeloop/account';
+import {CozAvatar, Input} from '@coze-arch/coze-design';
 
-import { UsernameInput } from './username-input';
-import { EditWrap } from './edit-wrap';
+import {UsernameInput} from './username-input';
+import {EditWrap} from './edit-wrap';
 
 import s from './index.module.less';
 

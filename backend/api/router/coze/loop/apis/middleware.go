@@ -673,6 +673,16 @@ func _getuserinfobytokenMw(handler *apis.APIHandler) []app.HandlerFunc {
 	return nil
 }
 
+func _oauthLogin(handler *apis.APIHandler) []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _getOauthProvider(handler *apis.APIHandler) []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
 func _user_idMw(handler *apis.APIHandler) []app.HandlerFunc {
 	// your code...
 	return nil

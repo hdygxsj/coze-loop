@@ -20,7 +20,9 @@ func SessionMW(ss session.ISessionService, us userservice.Client) app.HandlerFun
 		path := string(c.Path())
 		if path == "/api/foundation/v1/users/login_by_password" ||
 			path == "/api/foundation/v1/users/register" ||
-			path == "/api/foundation/v1/users/reset_password" {
+			path == "/api/foundation/v1/users/reset_password" ||
+			path == "/api/foundation/v1/users/login_by_oauth" ||
+			path == "/api/foundation/v1/users/get_oauth_provider" {
 			c.Next(ctx)
 			return
 		}

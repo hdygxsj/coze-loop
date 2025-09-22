@@ -239,6 +239,8 @@ func Register(r *server.Hertz, handler *apis.APIHandler) {
 					_users.POST("/login_by_password", append(_loginbypasswordMw(handler), apis.LoginByPassword)...)
 					_users.POST("/logout", append(_logoutMw(handler), apis.Logout)...)
 					_users.POST("/register", append(_registerMw(handler), apis.Register)...)
+					_users.GET("/login_by_oauth", append(_oauthLogin(handler), apis.LoginByOAuth)...)
+					_users.GET("/get_oauth_provider", append(_getOauthProvider(handler), apis.GetOauthProviders)...)
 					_users.POST("/reset_password", append(_resetpasswordMw(handler), apis.ResetPassword)...)
 					_users.GET("/session", append(_getuserinfobytokenMw(handler), apis.GetUserInfoByToken)...)
 					{

@@ -140,3 +140,15 @@ export const GetUserInfoByToken = /*#__PURE__*/createAPI<GetUserInfoByTokenReque
   "schemaRoot": "api://schemas/foundation_coze.loop.foundation.user",
   "service": "foundationUser"
 });
+export const GetOAuthProviders = /*#__PURE__*/createAPI<any, any>({
+  "url": "/api/foundation/v1/users/get_oauth_provider",
+  "method": "Get",
+  "name": "GetOAuthProviders",
+  "reqType": "Object",
+  "reqMapping": {
+    
+  },
+  "resType": "Object",
+  "schemaRoot": "api://schemas/foundation_coze.loop.foundation.user",
+  "service": "foundationAuthn"
+});

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import { I18n } from '@cozeloop/i18n-adapter';
-import { Input, Button, Typography } from '@coze-arch/coze-design';
+import { Input, Button, Typography, Divider } from '@coze-arch/coze-design';
 
 import loopBanner from '@/assets/loop-banner.png';
 import { ReactComponent as IconGithub } from '@/assets/github.svg';
@@ -11,18 +11,21 @@ import { ReactComponent as IconGithub } from '@/assets/github.svg';
 import { SwitchLang } from '../switch-lng';
 
 import s from './index.module.less';
+import { userService } from '@cozeloop/account/src/services/user-service';
 
 interface Props {
   loading?: boolean;
   onLogin?: (email: string, password: string) => void;
   onRegister?: (email: string, password: string) => void;
+  onGetOAuthProvider?: void
 }
 
 const { Text } = Typography;
 
-export function LoginPanel({ loading, onLogin, onRegister }: Props) {
+export function LoginPanel({ loading, onLogin, onRegister,onGetOAuthProvider }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [providers,setProviders] = useState({})
   // const [consent, setConsent] = useState(false);
   const canSubmit = Boolean(email && password);
 
@@ -34,9 +37,22 @@ export function LoginPanel({ loading, onLogin, onRegister }: Props) {
     onLogin?.(email, password);
   };
 
+  const initProviders = ()=>{
+    userService.getOAuthProviders().then(res=>{
+      debugger
+      setProviders(res)
+    })
+  }
+
+  const onJumpOAuthProvider = (provider)=>{
+
+  }
+
+  initProviders()
+
   return (
     <div className={s.container}>
-      <SwitchLang className="absolute right-[12px] top-[12px]" />
+      {/* <SwitchLang className="absolute right-[12px] top-[12px]" /> */}
       <div className="flex flex-col items-center">
         <img src={loopBanner} className={s.banner} />
         <div className="text-[18px] font-medium leading-[36px] my-[20px]">
@@ -76,34 +92,16 @@ export function LoginPanel({ loading, onLogin, onRegister }: Props) {
             {I18n.t('login')}
           </Button>
         </div>
-        {/* <div className="mt-[20px] flex">
-          <Checkbox
-            checked={consent}
-            onChange={e => setConsent(Boolean(e.target.checked))}
-            disabled={loading}
-          >
-             {I18n.t('please_agree_first', {
-              agreement: (
-                <a
-                  href="" // 协议链接
-                  target="_blank"
-                  className="no-underline ml-1 coz-fg-hglt"
-                  onClick={e => {
-                    e.stopPropagation();
-                  }}
-                >
-                  {I18n.t('user_agreement')}
-                </a>
-              ),
-            })}
-          </Checkbox>
-        </div> */}
+        {Object.keys(providers).length > 0 ?
+         <><Divider margin="30px">其他方式</Divider></>
+         :<></>}
+        
       </div>
       <div className={s.copyright}>
         <Text component="div" type="secondary">
-          ©2025 Coze Loop
+          广发银行股份有限公司
         </Text>
-        <Text type="secondary">
+        {/* <Text type="secondary">
           {I18n.t('deploy_info')}
           <span> · </span>
           <Text
@@ -126,7 +124,7 @@ export function LoginPanel({ loading, onLogin, onRegister }: Props) {
           >
             coze-dev/coze-loop
           </Text>
-        </Text>
+        </Text> */}
       </div>
     </div>
   );
