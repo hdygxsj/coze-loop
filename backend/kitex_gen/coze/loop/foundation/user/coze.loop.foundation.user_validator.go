@@ -174,3 +174,30 @@ func (p *MGetUserInfoResponse) IsValid() error {
 	}
 	return nil
 }
+func (p *LoginByOAuthRequest) IsValid() error {
+	if p.Base != nil {
+		if err := p.Base.IsValid(); err != nil {
+			return fmt.Errorf("field Base not valid, %w", err)
+		}
+	}
+	return nil
+}
+func (p *GetProviderResponse) IsValid() error {
+	if p.Base != nil {
+		if err := p.Base.IsValid(); err != nil {
+			return fmt.Errorf("field Base not valid, %w", err)
+		}
+	}
+	return nil
+}
+func (p *GetProviderRequest) IsValid() error {
+	if p.Base != nil {
+		if err := p.Base.IsValid(); err != nil {
+			return fmt.Errorf("field Base not valid, %w", err)
+		}
+	}
+	return nil
+}
+func (p *OAuthProperties) IsValid() error {
+	return nil
+}

@@ -19,6 +19,8 @@ type Client interface {
 	GetUserInfoByToken(ctx context.Context, request *user.GetUserInfoByTokenRequest, callOptions ...callopt.Option) (r *user.GetUserInfoByTokenResponse, err error)
 	GetUserInfo(ctx context.Context, request *user.GetUserInfoRequest, callOptions ...callopt.Option) (r *user.GetUserInfoResponse, err error)
 	MGetUserInfo(ctx context.Context, request *user.MGetUserInfoRequest, callOptions ...callopt.Option) (r *user.MGetUserInfoResponse, err error)
+	LoginByOAuth(ctx context.Context, request *user.LoginByOAuthRequest, callOptions ...callopt.Option) (r *user.LoginByPasswordResponse, err error)
+	GetOAuthProviders(ctx context.Context, request *user.GetProviderRequest, callOptions ...callopt.Option) (r *user.GetProviderResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -88,4 +90,14 @@ func (p *kUserServiceClient) GetUserInfo(ctx context.Context, request *user.GetU
 func (p *kUserServiceClient) MGetUserInfo(ctx context.Context, request *user.MGetUserInfoRequest, callOptions ...callopt.Option) (r *user.MGetUserInfoResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.MGetUserInfo(ctx, request)
+}
+
+func (p *kUserServiceClient) LoginByOAuth(ctx context.Context, request *user.LoginByOAuthRequest, callOptions ...callopt.Option) (r *user.LoginByPasswordResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.LoginByOAuth(ctx, request)
+}
+
+func (p *kUserServiceClient) GetOAuthProviders(ctx context.Context, request *user.GetProviderRequest, callOptions ...callopt.Option) (r *user.GetProviderResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetOAuthProviders(ctx, request)
 }

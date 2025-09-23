@@ -10,7 +10,7 @@ if ! command -v go &>/dev/null; then
 fi
 
 PACKAGES=(
-  "github.com/cloudwego/thriftgo@v0.4.1"
+  "github.com/cloudwego/thriftgo@v0.4.2"
   "github.com/cloudwego/kitex/tool/cmd/kitex@v0.13.1"
   "github.com/cloudwego/hertz/cmd/hz@v0.9.7"
   "github.com/cloudwego/thrift-gen-validator@v0.2.6"

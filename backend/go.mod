@@ -54,6 +54,7 @@ require (
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.6.0
+	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/hertz-contrib/sse v0.1.0
 	github.com/jarcoal/httpmock v1.4.0
@@ -99,7 +100,10 @@ require (
 	gorm.io/plugin/soft_delete v1.2.1
 )
 
-require github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.1 // indirect
+require (
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.1 // indirect
+	google.golang.org/genproto v0.0.0-20241118233622-e639e219e697 // indirect
+)
 
 require (
 	cloud.google.com/go v0.116.0 // indirect
@@ -107,7 +111,7 @@ require (
 	cloud.google.com/go/auth v0.13.0 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.6 // indirect
 	cloud.google.com/go/compute/metadata v0.7.0 // indirect
-	cloud.google.com/go/longrunning v0.5.7 // indirect
+	cloud.google.com/go/longrunning v0.6.2 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/ClickHouse/ch-go v0.65.1 // indirect
 	github.com/alicebob/gopher-json v0.0.0-20230218143504-906a9b012302 // indirect
@@ -245,7 +249,7 @@ require (
 	golang.org/x/arch v0.15.0 // indirect
 	golang.org/x/mod v0.25.0 // indirect
 	golang.org/x/net v0.42.0 // indirect
-	golang.org/x/oauth2 v0.30.0 // indirect
+	golang.org/x/oauth2 v0.30.0
 	golang.org/x/sys v0.34.0 // indirect
 	golang.org/x/time v0.8.0 // indirect
 	golang.org/x/tools v0.34.0 // indirect

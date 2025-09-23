@@ -101,6 +101,33 @@ struct MGetUserInfoResponse {
     255: base.BaseResp  BaseResp
 }
 
+
+struct LoginByOAuthRequest {
+    1: optional string code               // OAuth 授权码
+    2: optional string provider           // OAuth 提供商（如 "github", "google"）
+
+    255: optional base.Base Base
+}
+
+struct GetProviderResponse {
+    1: optional map<string,OAuthProperties> providers
+    255: optional base.Base Base
+}
+
+struct GetProviderRequest {
+    255: optional base.Base Base
+}
+
+struct OAuthProperties {
+    1: optional string ClientID        // PascalCase
+    2: optional string ClientSecret
+    3: optional string AuthURL
+    4: optional string TokenURL
+    5: optional string UserInfoURL
+    6: optional string RedirectURL
+    7: optional map<string, string> Mapping
+}
+
 service UserService {
     // 用户注册相关接口
     UserRegisterResponse Register(1: UserRegisterRequest request) (api.post = "/api/foundation/v1/users/register")
@@ -120,4 +147,9 @@ service UserService {
     GetUserInfoResponse GetUserInfo(1: GetUserInfoRequest request)
     // 批量获取用户信息
     MGetUserInfoResponse MGetUserInfo(1: MGetUserInfoRequest request)
+
+    LoginByPasswordResponse LoginByOAuth(1: LoginByOAuthRequest request) (api.get = "/api/foundation/v1/users/login_by_oauth/:provider")
+
+    GetProviderResponse GetOAuthProviders(1: GetProviderRequest request) (api.get = "/api/foundation/v1/users/providers")
+
 }

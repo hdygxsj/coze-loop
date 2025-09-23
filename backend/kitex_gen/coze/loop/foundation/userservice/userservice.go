@@ -70,6 +70,20 @@ var serviceMethods = map[string]kitex.MethodInfo{
 		false,
 		kitex.WithStreamingMode(kitex.StreamingNone),
 	),
+	"LoginByOAuth": kitex.NewMethodInfo(
+		loginByOAuthHandler,
+		newUserServiceLoginByOAuthArgs,
+		newUserServiceLoginByOAuthResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
+	"GetOAuthProviders": kitex.NewMethodInfo(
+		getOAuthProvidersHandler,
+		newUserServiceGetOAuthProvidersArgs,
+		newUserServiceGetOAuthProvidersResult,
+		false,
+		kitex.WithStreamingMode(kitex.StreamingNone),
+	),
 }
 
 var (
@@ -255,6 +269,44 @@ func newUserServiceMGetUserInfoResult() interface{} {
 	return user.NewUserServiceMGetUserInfoResult()
 }
 
+func loginByOAuthHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceLoginByOAuthArgs)
+	realResult := result.(*user.UserServiceLoginByOAuthResult)
+	success, err := handler.(user.UserService).LoginByOAuth(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+
+func newUserServiceLoginByOAuthArgs() interface{} {
+	return user.NewUserServiceLoginByOAuthArgs()
+}
+
+func newUserServiceLoginByOAuthResult() interface{} {
+	return user.NewUserServiceLoginByOAuthResult()
+}
+
+func getOAuthProvidersHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceGetOAuthProvidersArgs)
+	realResult := result.(*user.UserServiceGetOAuthProvidersResult)
+	success, err := handler.(user.UserService).GetOAuthProviders(ctx, realArg.Request)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+
+func newUserServiceGetOAuthProvidersArgs() interface{} {
+	return user.NewUserServiceGetOAuthProvidersArgs()
+}
+
+func newUserServiceGetOAuthProvidersResult() interface{} {
+	return user.NewUserServiceGetOAuthProvidersResult()
+}
+
 type kClient struct {
 	c  client.Client
 	sc client.Streaming
@@ -342,6 +394,26 @@ func (p *kClient) MGetUserInfo(ctx context.Context, request *user.MGetUserInfoRe
 	_args.Request = request
 	var _result user.UserServiceMGetUserInfoResult
 	if err = p.c.Call(ctx, "MGetUserInfo", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) LoginByOAuth(ctx context.Context, request *user.LoginByOAuthRequest) (r *user.LoginByPasswordResponse, err error) {
+	var _args user.UserServiceLoginByOAuthArgs
+	_args.Request = request
+	var _result user.UserServiceLoginByOAuthResult
+	if err = p.c.Call(ctx, "LoginByOAuth", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetOAuthProviders(ctx context.Context, request *user.GetProviderRequest) (r *user.GetProviderResponse, err error) {
+	var _args user.UserServiceGetOAuthProvidersArgs
+	_args.Request = request
+	var _result user.UserServiceGetOAuthProvidersResult
+	if err = p.c.Call(ctx, "GetOAuthProviders", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

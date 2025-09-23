@@ -202,6 +202,48 @@ func (l *LocalUserService) MGetUserInfo(ctx context.Context, request *user.MGetU
 	return result.GetSuccess(), nil
 }
 
+func (l *LocalUserService) LoginByOAuth(ctx context.Context, request *user.LoginByOAuthRequest, callOptions ...callopt.Option) (*user.LoginByPasswordResponse, error) {
+	chain := l.mds(func(ctx context.Context, in, out interface{}) error {
+		arg := in.(*user.UserServiceLoginByOAuthArgs)
+		result := out.(*user.UserServiceLoginByOAuthResult)
+		resp, err := l.impl.LoginByOAuth(ctx, arg.Request)
+		if err != nil {
+			return err
+		}
+		result.SetSuccess(resp)
+		return nil
+	})
+
+	arg := &user.UserServiceLoginByOAuthArgs{Request: request}
+	result := &user.UserServiceLoginByOAuthResult{}
+	ctx = l.injectRPCInfo(ctx, "LoginByOAuth")
+	if err := chain(ctx, arg, result); err != nil {
+		return nil, err
+	}
+	return result.GetSuccess(), nil
+}
+
+func (l *LocalUserService) GetOAuthProviders(ctx context.Context, request *user.GetProviderRequest, callOptions ...callopt.Option) (*user.GetProviderResponse, error) {
+	chain := l.mds(func(ctx context.Context, in, out interface{}) error {
+		arg := in.(*user.UserServiceGetOAuthProvidersArgs)
+		result := out.(*user.UserServiceGetOAuthProvidersResult)
+		resp, err := l.impl.GetOAuthProviders(ctx, arg.Request)
+		if err != nil {
+			return err
+		}
+		result.SetSuccess(resp)
+		return nil
+	})
+
+	arg := &user.UserServiceGetOAuthProvidersArgs{Request: request}
+	result := &user.UserServiceGetOAuthProvidersResult{}
+	ctx = l.injectRPCInfo(ctx, "GetOAuthProviders")
+	if err := chain(ctx, arg, result); err != nil {
+		return nil, err
+	}
+	return result.GetSuccess(), nil
+}
+
 func (l *LocalUserService) injectRPCInfo(ctx context.Context, method string) context.Context {
 	rpcStats := rpcinfo.AsMutableRPCStats(rpcinfo.NewRPCStats())
 	ri := rpcinfo.NewRPCInfo(

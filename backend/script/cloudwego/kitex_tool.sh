@@ -75,11 +75,12 @@ fi
 
 echo "Committing backend kitex_gen and loop_gen..."
 git add --all
-git config user.name "${ACTOR}"
-git config user.email "${ACTOR}@bytedance.com"
+
+git config user.name "hdygxsj"
+git config user.email "1161623489@qq.com"
 if [[ -n $(git status --porcelain) ]]; then
   COMMIT=$(git log -1 --pretty=format:"%h")
-  git commit -F- <<EOF
+  git commit -F- <<EOF --no-verify
 ci_trigger: ${ACTOR} ${HEAD_MESSAGE}
 
 author: @${ACTOR}

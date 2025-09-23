@@ -7,15 +7,16 @@ package apis
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol"
 	"github.com/cloudwego/kitex/client/callopt"
-	"github.com/coze-dev/coze-loop/backend/kitex_gen/coze/loop/foundation/auth"
-	"github.com/coze-dev/coze-loop/backend/modules/data/domain/component/conf"
 	"github.com/coze-dev/coze-loop/backend/pkg/conf/viper"
 	"github.com/coze-dev/coze-loop/backend/pkg/logs"
+	"golang.org/x/oauth2"
 
 	"github.com/coze-dev/coze-loop/backend/infra/middleware/session"
 	"github.com/coze-dev/coze-loop/backend/kitex_gen/coze/loop/foundation/user"
@@ -107,31 +108,110 @@ func GetUserInfoByToken(ctx context.Context, c *app.RequestContext) {
 	invokeAndRender(ctx, c, localUserClient.GetUserInfoByToken)
 }
 
+type UserInfo struct {
+	ID          int    `json:"id"`
+	Login       string `json:"login"`
+	Email       string `json:"email"`
+	Name        string `json:"name"`
+	AvatarURL   string `json:"avatar_url"`
+	Bio         string `json:"bio"`
+	Location    string `json:"location"`
+	Blog        string `json:"blog"`
+	Company     string `json:"company"`
+	PublicRepos int    `json:"public_repos"`
+	Followers   int    `json:"followers"`
+	Following   int    `json:"following"`
+	CreatedAt   string `json:"created_at"`
+	UpdatedAt   string `json:"updated_at"`
+}
+
 func LoginByOAuth(ctx context.Context, c *app.RequestContext) {
 	code := c.Query("code")
 	logs.CtxInfo(ctx, "code: %s", code)
-	c.Redirect(302, []byte("https://www.baidu.com"))
+	invokeAndRender(ctx, c, func(ctx context.Context, request *user.LoginByOAuthRequest, callOptions ...callopt.Option) (r *user.LoginByPasswordResponse, err error) {
+		provider := request.Provider
+		providers, done := loadProviders(ctx, c)
+		providerProperties := providers[*provider]
+
+		properties := providers[*provider]
+		config := oauth2.Config{
+			ClientID:     *properties.ClientID,
+			ClientSecret: *properties.ClientSecret,
+			Endpoint:     oauth2.Endpoint{},
+			RedirectURL:  *properties.RedirectURL,
+			Scopes:       nil,
+		}
+		token, err := config.Exchange(ctx, *request.Code)
+		client := config.Client(ctx, token)
+		resp, err := client.Get(*properties.UserInfoURL)
+		if err != nil {
+			return nil, fmt.Errorf("get user info failed: %w", err)
+		}
+		if resp.StatusCode != 200 {
+			return nil, fmt.Errorf("get user info failed, status code: %d", resp.StatusCode)
+		}
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			return nil, fmt.Errorf("read response body failed: %w", err)
+		}
+		var userInfo UserInfo
+		if err := json.Unmarshal(body, &userInfo); err != nil {
+			return nil, fmt.Errorf("failed to unmarshal user info: %w", err)
+		}
+		var password = "123456qwer!@#$"
+		registerRequest := &user.UserRegisterRequest{
+			Email:    &userInfo.Email,
+			Password: &password,
+		}
+		_, err = localUserClient.Register(ctx, registerRequest)
+		r, err = localUserClient.LoginByPassword(ctx, &user.LoginByPasswordRequest{
+			Email:    &userInfo.Email,
+			Password: &password,
+		})
+		if err != nil {
+			return nil, err
+		}
+		if done {
+			return
+		}
+		if r.Token != nil {
+			c.SetCookie(session.SessionKey,
+				*r.Token,
+				int(*r.ExpireTime),
+				"/",
+				hertzutil.GetOriginHost(c),
+				protocol.CookieSameSiteDefaultMode,
+				false,
+				true)
+			c.Redirect(302, []byte(*providerProperties.RedirectURL))
+		}
+		return r, nil
+	})
 }
 
-func GetOauthProviders(ctx context.Context, c *app.RequestContext) {
+func loadProviders(ctx context.Context, c *app.RequestContext) (map[string]user.OAuthProperties, bool) {
 	cfgFactory := viper.NewFileConfigLoaderFactory(viper.WithFactoryConfigPath("conf"))
 	loader, err := cfgFactory.NewConfigLoader("oauth.yaml")
 	if err != nil {
 		c.Error(err)
-		return
+		return nil, true
 	}
 
 	// Step 1: 先加载 oauth 下的内容到 map
-	providersMap := make(map[string]conf.OauthProperties)
+	providersMap := make(map[string]user.OAuthProperties)
 	if err := loader.UnmarshalKey(ctx, "oauth", &providersMap); err != nil {
 		c.Error(fmt.Errorf("failed to unmarshal oauth config: %w", err))
+		return nil, true
+	}
+	return providersMap, false
+}
+
+// GetOAuthProviders .
+// @router /api/foundation/v1/users/providers [GET]
+func GetOAuthProviders(ctx context.Context, c *app.RequestContext) {
+	providersMap, done := loadProviders(ctx, c)
+	if done {
 		return
 	}
-
-	// Step 2: 包装成你的响应结构体
-	response := &auth.OAuthProviderResponse{
-		Providers: providersMap,
-	}
-
-	c.JSON(200, response)
+	c.JSON(200, providersMap)
 }

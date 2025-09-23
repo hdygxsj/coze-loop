@@ -46,6 +46,11 @@ type UserApplicationImpl struct {
 	registerController userRegisterController
 }
 
+func (u *UserApplicationImpl) LoginByOAuth(ctx context.Context, req *user.LoginByOAuthRequest) (r *user.LoginByPasswordResponse, err error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 type userRegisterController struct {
 	// configLoader weak dependency, might be nil
 	configLoader conf.IConfigLoader
