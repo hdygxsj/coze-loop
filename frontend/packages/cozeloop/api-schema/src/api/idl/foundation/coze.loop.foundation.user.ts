@@ -141,7 +141,7 @@ export const GetUserInfoByToken = /*#__PURE__*/createAPI<GetUserInfoByTokenReque
   "service": "foundationUser"
 });
 export const GetOAuthProviders = /*#__PURE__*/createAPI<any, any>({
-  "url": "/api/foundation/v1/users/get_oauth_provider",
+  "url": "/api/foundation/v1/users/providers",
   "method": "Get",
   "name": "GetOAuthProviders",
   "reqType": "Object",

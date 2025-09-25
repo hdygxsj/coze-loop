@@ -46,6 +46,11 @@ type UserApplicationImpl struct {
 	registerController userRegisterController
 }
 
+func (u *UserApplicationImpl) GetOAuthProviders(ctx context.Context, request *user.GetProviderRequest) (r *user.GetProviderResponse, err error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (u *UserApplicationImpl) LoginByOAuth(ctx context.Context, req *user.LoginByOAuthRequest) (r *user.LoginByPasswordResponse, err error) {
 	//TODO implement me
 	panic("implement me")

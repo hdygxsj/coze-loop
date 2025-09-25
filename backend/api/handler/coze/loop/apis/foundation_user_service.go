@@ -189,7 +189,7 @@ func LoginByOAuth(ctx context.Context, c *app.RequestContext) {
 	})
 }
 
-func loadProviders(ctx context.Context, c *app.RequestContext) (map[string]user.OAuthProperties, bool) {
+func loadProviders(ctx context.Context, c *app.RequestContext) (map[string]*user.OAuthProperties, bool) {
 	cfgFactory := viper.NewFileConfigLoaderFactory(viper.WithFactoryConfigPath("conf"))
 	loader, err := cfgFactory.NewConfigLoader("oauth.yaml")
 	if err != nil {
@@ -198,7 +198,7 @@ func loadProviders(ctx context.Context, c *app.RequestContext) (map[string]user.
 	}
 
 	// Step 1: 先加载 oauth 下的内容到 map
-	providersMap := make(map[string]user.OAuthProperties)
+	providersMap := make(map[string]*user.OAuthProperties)
 	if err := loader.UnmarshalKey(ctx, "oauth", &providersMap); err != nil {
 		c.Error(fmt.Errorf("failed to unmarshal oauth config: %w", err))
 		return nil, true
@@ -213,5 +213,8 @@ func GetOAuthProviders(ctx context.Context, c *app.RequestContext) {
 	if done {
 		return
 	}
-	c.JSON(200, providersMap)
+	response := user.GetProviderResponse{
+		Providers: providersMap,
+	}
+	c.JSON(200, response)
 }
