@@ -41,6 +41,7 @@ export function LoginPanel({ loading, onLogin, onRegister,providers }: Props) {
 
 
   const onJumpOAuthProvider = (provider)=>{
+    debugger
     console.log(provider)
     window.location.href = `${provider.authUrl}?response_type=code&client_id=${provider.clientId}&redirect_uri=${provider.redirectUrl}
     

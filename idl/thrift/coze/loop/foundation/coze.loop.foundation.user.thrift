@@ -119,13 +119,13 @@ struct GetProviderRequest {
 }
 
 struct OAuthProperties {
-    1: optional string ClientID        // PascalCase
-    2: optional string ClientSecret
-    3: optional string AuthURL
-    4: optional string TokenURL
-    5: optional string UserInfoURL
-    6: optional string RedirectURL
-    7: optional map<string, string> Mapping
+    1: optional string clientID        // PascalCase
+    2: optional string clientSecret
+    3: optional string authURL
+    4: optional string tokenURL
+    5: optional string userInfoURL
+    6: optional string redirectURL
+    7: optional map<string, string> mapping
 }
 
 service UserService {

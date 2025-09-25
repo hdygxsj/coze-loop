@@ -5617,13 +5617,13 @@ func (p *GetProviderRequest) Field255DeepEqual(src *base.Base) bool {
 
 type OAuthProperties struct {
 	// PascalCase
-	ClientID     *string           `thrift:"ClientID,1,optional" frugal:"1,optional,string" form:"ClientID" json:"ClientID,omitempty" query:"ClientID"`
-	ClientSecret *string           `thrift:"ClientSecret,2,optional" frugal:"2,optional,string" form:"ClientSecret" json:"ClientSecret,omitempty" query:"ClientSecret"`
-	AuthURL      *string           `thrift:"AuthURL,3,optional" frugal:"3,optional,string" form:"AuthURL" json:"AuthURL,omitempty" query:"AuthURL"`
-	TokenURL     *string           `thrift:"TokenURL,4,optional" frugal:"4,optional,string" form:"TokenURL" json:"TokenURL,omitempty" query:"TokenURL"`
-	UserInfoURL  *string           `thrift:"UserInfoURL,5,optional" frugal:"5,optional,string" form:"UserInfoURL" json:"UserInfoURL,omitempty" query:"UserInfoURL"`
-	RedirectURL  *string           `thrift:"RedirectURL,6,optional" frugal:"6,optional,string" form:"RedirectURL" json:"RedirectURL,omitempty" query:"RedirectURL"`
-	Mapping      map[string]string `thrift:"Mapping,7,optional" frugal:"7,optional,map<string:string>" form:"Mapping" json:"Mapping,omitempty" query:"Mapping"`
+	ClientID     *string           `thrift:"clientID,1,optional" frugal:"1,optional,string" form:"clientID" json:"clientID,omitempty" query:"clientID"`
+	ClientSecret *string           `thrift:"clientSecret,2,optional" frugal:"2,optional,string" form:"clientSecret" json:"clientSecret,omitempty" query:"clientSecret"`
+	AuthURL      *string           `thrift:"authURL,3,optional" frugal:"3,optional,string" form:"authURL" json:"authURL,omitempty" query:"authURL"`
+	TokenURL     *string           `thrift:"tokenURL,4,optional" frugal:"4,optional,string" form:"tokenURL" json:"tokenURL,omitempty" query:"tokenURL"`
+	UserInfoURL  *string           `thrift:"userInfoURL,5,optional" frugal:"5,optional,string" form:"userInfoURL" json:"userInfoURL,omitempty" query:"userInfoURL"`
+	RedirectURL  *string           `thrift:"redirectURL,6,optional" frugal:"6,optional,string" form:"redirectURL" json:"redirectURL,omitempty" query:"redirectURL"`
+	Mapping      map[string]string `thrift:"mapping,7,optional" frugal:"7,optional,map<string:string>" form:"mapping" json:"mapping,omitempty" query:"mapping"`
 }
 
 func NewOAuthProperties() *OAuthProperties {
@@ -5739,13 +5739,13 @@ func (p *OAuthProperties) SetMapping(val map[string]string) {
 }
 
 var fieldIDToName_OAuthProperties = map[int16]string{
-	1: "ClientID",
-	2: "ClientSecret",
-	3: "AuthURL",
-	4: "TokenURL",
-	5: "UserInfoURL",
-	6: "RedirectURL",
-	7: "Mapping",
+	1: "clientID",
+	2: "clientSecret",
+	3: "authURL",
+	4: "tokenURL",
+	5: "userInfoURL",
+	6: "redirectURL",
+	7: "mapping",
 }
 
 func (p *OAuthProperties) IsSetClientID() bool {
@@ -6030,7 +6030,7 @@ WriteStructEndError:
 
 func (p *OAuthProperties) writeField1(oprot thrift.TProtocol) (err error) {
 	if p.IsSetClientID() {
-		if err = oprot.WriteFieldBegin("ClientID", thrift.STRING, 1); err != nil {
+		if err = oprot.WriteFieldBegin("clientID", thrift.STRING, 1); err != nil {
 			goto WriteFieldBeginError
 		}
 		if err := oprot.WriteString(*p.ClientID); err != nil {
@@ -6049,7 +6049,7 @@ WriteFieldEndError:
 
 func (p *OAuthProperties) writeField2(oprot thrift.TProtocol) (err error) {
 	if p.IsSetClientSecret() {
-		if err = oprot.WriteFieldBegin("ClientSecret", thrift.STRING, 2); err != nil {
+		if err = oprot.WriteFieldBegin("clientSecret", thrift.STRING, 2); err != nil {
 			goto WriteFieldBeginError
 		}
 		if err := oprot.WriteString(*p.ClientSecret); err != nil {
@@ -6068,7 +6068,7 @@ WriteFieldEndError:
 
 func (p *OAuthProperties) writeField3(oprot thrift.TProtocol) (err error) {
 	if p.IsSetAuthURL() {
-		if err = oprot.WriteFieldBegin("AuthURL", thrift.STRING, 3); err != nil {
+		if err = oprot.WriteFieldBegin("authURL", thrift.STRING, 3); err != nil {
 			goto WriteFieldBeginError
 		}
 		if err := oprot.WriteString(*p.AuthURL); err != nil {
@@ -6087,7 +6087,7 @@ WriteFieldEndError:
 
 func (p *OAuthProperties) writeField4(oprot thrift.TProtocol) (err error) {
 	if p.IsSetTokenURL() {
-		if err = oprot.WriteFieldBegin("TokenURL", thrift.STRING, 4); err != nil {
+		if err = oprot.WriteFieldBegin("tokenURL", thrift.STRING, 4); err != nil {
 			goto WriteFieldBeginError
 		}
 		if err := oprot.WriteString(*p.TokenURL); err != nil {
@@ -6106,7 +6106,7 @@ WriteFieldEndError:
 
 func (p *OAuthProperties) writeField5(oprot thrift.TProtocol) (err error) {
 	if p.IsSetUserInfoURL() {
-		if err = oprot.WriteFieldBegin("UserInfoURL", thrift.STRING, 5); err != nil {
+		if err = oprot.WriteFieldBegin("userInfoURL", thrift.STRING, 5); err != nil {
 			goto WriteFieldBeginError
 		}
 		if err := oprot.WriteString(*p.UserInfoURL); err != nil {
@@ -6125,7 +6125,7 @@ WriteFieldEndError:
 
 func (p *OAuthProperties) writeField6(oprot thrift.TProtocol) (err error) {
 	if p.IsSetRedirectURL() {
-		if err = oprot.WriteFieldBegin("RedirectURL", thrift.STRING, 6); err != nil {
+		if err = oprot.WriteFieldBegin("redirectURL", thrift.STRING, 6); err != nil {
 			goto WriteFieldBeginError
 		}
 		if err := oprot.WriteString(*p.RedirectURL); err != nil {
@@ -6144,7 +6144,7 @@ WriteFieldEndError:
 
 func (p *OAuthProperties) writeField7(oprot thrift.TProtocol) (err error) {
 	if p.IsSetMapping() {
-		if err = oprot.WriteFieldBegin("Mapping", thrift.MAP, 7); err != nil {
+		if err = oprot.WriteFieldBegin("mapping", thrift.MAP, 7); err != nil {
 			goto WriteFieldBeginError
 		}
 		if err := oprot.WriteMapBegin(thrift.STRING, thrift.STRING, len(p.Mapping)); err != nil {
