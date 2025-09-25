@@ -6,6 +6,7 @@ package middleware
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/cloudwego/hertz/pkg/app"
 
@@ -21,7 +22,7 @@ func SessionMW(ss session.ISessionService, us userservice.Client) app.HandlerFun
 		if path == "/api/foundation/v1/users/login_by_password" ||
 			path == "/api/foundation/v1/users/register" ||
 			path == "/api/foundation/v1/users/reset_password" ||
-			path == "/api/foundation/v1/users/login_by_oauth" ||
+			strings.Contains(path, "/api/foundation/v1/users/login_by_oauth") ||
 			path == "/api/foundation/v1/users/providers" {
 			c.Next(ctx)
 			return

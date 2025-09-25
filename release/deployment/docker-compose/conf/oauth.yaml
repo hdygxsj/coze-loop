@@ -7,7 +7,7 @@ oauth:
     authUrl: https://github.com/login/oauth/authorize
     tokenUrl: https://github.com/login/oauth/access_token
     userInfoUrl: https://api.github.com/user
-    redirectUrl: http://127.0.0.1:8082/api/foundation/v1/users/login_by_oauth
+    redirectUrl: http://127.0.0.1:8082/api/foundation/v1/users/login_by_oauth/github
   google:
     mapping:
       mail: mail
@@ -16,4 +16,4 @@ oauth:
     authUrl: https://github.com/login/oauth/authorize
     tokenUrl: https://github.com/login/oauth/access_token
     userInfoUrl: https://api.github.com/user
-    redirectUrl: http://127.0.0.1:8082/api/foundation/v1/users/login_by_oauth
+    redirectUrl: http://127.0.0.1:8082/api/foundation/v1/users/login_by_oauth/google
