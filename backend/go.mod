@@ -54,7 +54,6 @@ require (
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.6.0
-	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/hertz-contrib/sse v0.1.0
 	github.com/jarcoal/httpmock v1.4.0
@@ -100,10 +99,7 @@ require (
 	gorm.io/plugin/soft_delete v1.2.1
 )
 
-require (
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.1 // indirect
-	google.golang.org/genproto v0.0.0-20241118233622-e639e219e697 // indirect
-)
+require github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.1 // indirect
 
 require (
 	cloud.google.com/go v0.116.0 // indirect
