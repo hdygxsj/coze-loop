@@ -39,18 +39,22 @@ export function LoginPanel({ loading, onLogin, onRegister,providers }: Props) {
   };
 
   useEffect(() => {
-    // console.log('providers', providers['github']);
     // 默认自动跳转登陆
-    // if (providers['github']) {
-    //   onJumpOAuthProvider(providers['github'])
-    // }
+    // console.log(Object.keys(providers));
+    const providerData = Object.keys(providers)
+    // console.log(providerData[0])
+    if (providerData.length) {
+      // console.log(providers[providerData[0]], Object.keys(providers)[0])
+      onJumpOAuthProvider(providers[(providerData[0])], providerData[0])
+    }
+
     
   }, [providers])
 
-  const onJumpOAuthProvider = (provider)=>{
+  const onJumpOAuthProvider = (provider, providerName)=>{
     // debugger
     // console.log(provider)
-    const redirectURL = `http://127.0.0.1:8090/auth/trustLogin/oidc`;
+    const redirectURL = `http://127.0.0.1:8090/auth/trustLogin/oidc?provider=${providerName}`;
     // http://localhost:8090/auth/trustLogin/oidc
     const url = `${provider.authURL}?response_type=code&client_id=${provider.clientID}&redirect_uri=${redirectURL}`;
 
@@ -105,7 +109,7 @@ export function LoginPanel({ loading, onLogin, onRegister,providers }: Props) {
          <><Divider margin="30px">其他方式</Divider>
           <Space align='center'> {Object.keys(providers).map?.(e=>{
           return <Button style={{width:"20%"}} onClick={()=>{
-            onJumpOAuthProvider(providers[e])
+            onJumpOAuthProvider(providers[e], e)
           }}>{e}</Button>
          })}
          </Space>

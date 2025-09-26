@@ -106,8 +106,8 @@ export const LoginByPassword = /*#__PURE__*/createAPI<LoginByPasswordRequest, Lo
   "service": "foundationUser"
 });
 export const LoginByOauth = /*#__PURE__*/createAPI<LoginByOauthRequest, LoginByPasswordResponse>({
-  "url": "/api/foundation/v1/users/login_by_oauth/github",
-  "method": "GET",
+  "url": `/api/foundation/v1/users/login_by_oauth/github`,
+  "method": "POST",
   "name": "LoginByOauth",
   "reqType": "LoginByOauthRequest",
   "reqMapping": {

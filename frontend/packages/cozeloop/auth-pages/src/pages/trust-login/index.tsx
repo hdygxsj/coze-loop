@@ -17,9 +17,10 @@ export function TrustLogin() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const code = searchParams.get('code');
+  const provider = searchParams.get('provider');
   
   useEffect(() => {
-    oauth('github', code || '').then(() => {
+    oauth(provider || '', code || '').then(() => {
       // console.log("111");
       navigate('/')
     }).catch(() => {
