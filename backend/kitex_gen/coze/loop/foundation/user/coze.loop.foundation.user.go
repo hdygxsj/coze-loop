@@ -4789,7 +4789,7 @@ type LoginByOAuthRequest struct {
 	// OAuth 授权码
 	Code *string `thrift:"code,1,optional" frugal:"1,optional,string" form:"code" json:"code,omitempty" query:"code"`
 	// OAuth 提供商（如 "github", "google"）
-	Provider *string    `thrift:"provider,2,optional" frugal:"2,optional,string" form:"provider" json:"provider,omitempty" query:"provider"`
+	Provider *string    `thrift:"provider,2,optional" frugal:"2,optional,string" json:"provider,omitempty" path:"provider"`
 	Base     *base.Base `thrift:"Base,255,optional" frugal:"255,optional,base.Base" form:"Base" json:"Base,omitempty" query:"Base"`
 }
 
