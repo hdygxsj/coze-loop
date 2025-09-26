@@ -32,6 +32,22 @@ export const userService = (() => ({
 
     return resp;
   },
+  async oauth(provider: string, code: string) {
+    // const url = `/api/foundation/v1/users/login_by_oauth/${provider}?code=${code}&goto=`;
+    
+    // window.location.href = url;
+    // debugger
+    if (!provider || !code) {
+      throw new Error('Invalid provider or code');
+    }
+
+    const resp = await FoundationApi.LoginByOauth({
+      provider,
+      code,
+    });
+
+    return resp;
+  },
   async logout(token?: string) {
     await FoundationApi.Logout({ token });
   },

@@ -56,12 +56,12 @@ export function LoginPage() {
   }, []);
   const [providers, setProviders] = useState({})
   const initProviders = () => {
-    debugger
+    // debugger
     if(providers && Object.keys(providers).length>0){
       return
     }
      userService.getOAuthProviders().then(res=>{
-      debugger
+      // debugger
       setProviders(res.providers)
     })
   }

@@ -1,6 +1,6 @@
 // Copyright (c) 2025 coze-dev Authors
 // SPDX-License-Identifier: Apache-2.0
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { I18n } from '@cozeloop/i18n-adapter';
 import { Input, Button, Typography, Divider, Row, Space } from '@coze-arch/coze-design';
@@ -38,14 +38,23 @@ export function LoginPanel({ loading, onLogin, onRegister,providers }: Props) {
     onLogin?.(email, password);
   };
 
-
+  useEffect(() => {
+    // console.log('providers', providers['github']);
+    // 默认自动跳转登陆
+    // if (providers['github']) {
+    //   onJumpOAuthProvider(providers['github'])
+    // }
+    
+  }, [providers])
 
   const onJumpOAuthProvider = (provider)=>{
-    debugger
-    console.log(provider)
-    window.location.href = `${provider.authURL}?response_type=code&client_id=${provider.clientID}&redirect_uri=${provider.redirectURL}
-    
-    `;
+    // debugger
+    // console.log(provider)
+    const redirectURL = `http://127.0.0.1:8090/auth/trustLogin/oidc`;
+    // http://localhost:8090/auth/trustLogin/oidc
+    const url = `${provider.authURL}?response_type=code&client_id=${provider.clientID}&redirect_uri=${redirectURL}`;
+
+    window.location.href = url;
   }
 
 

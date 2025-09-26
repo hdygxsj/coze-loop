@@ -10,6 +10,7 @@ export {
 
 // hooks
 export { useLogin } from './hooks/use-login';
+export { useOauth } from './hooks/use-oauth';
 export { useRegister } from './hooks/use-register';
 export { useLoginStatus } from './hooks/use-login-status';
 export { useLogout } from './hooks/use-logout';

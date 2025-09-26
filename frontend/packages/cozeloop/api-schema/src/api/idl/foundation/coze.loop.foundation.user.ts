@@ -16,6 +16,10 @@ export interface LoginByPasswordRequest {
   email?: string,
   password?: string,
 }
+export interface LoginByOauthRequest {
+  provider?: string,
+  code?: string,
+}
 export interface LoginByPasswordResponse {
   user_info?: user.UserInfoDetail,
   token?: string,
@@ -96,6 +100,18 @@ export const LoginByPassword = /*#__PURE__*/createAPI<LoginByPasswordRequest, Lo
   "reqType": "LoginByPasswordRequest",
   "reqMapping": {
     "body": ["email", "password"]
+  },
+  "resType": "LoginByPasswordResponse",
+  "schemaRoot": "api://schemas/foundation_coze.loop.foundation.user",
+  "service": "foundationUser"
+});
+export const LoginByOauth = /*#__PURE__*/createAPI<LoginByOauthRequest, LoginByPasswordResponse>({
+  "url": "/api/foundation/v1/users/login_by_oauth/github",
+  "method": "GET",
+  "name": "LoginByOauth",
+  "reqType": "LoginByOauthRequest",
+  "reqMapping": {
+    "query": ["provider", "code"]
   },
   "resType": "LoginByPasswordResponse",
   "schemaRoot": "api://schemas/foundation_coze.loop.foundation.user",
