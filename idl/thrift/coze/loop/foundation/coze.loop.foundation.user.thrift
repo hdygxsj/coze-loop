@@ -105,7 +105,7 @@ struct MGetUserInfoResponse {
 struct LoginByOAuthRequest {
     1: optional string code            // OAuth 授权码
     2: optional string provider   (api.path = "provider")          // OAuth 提供商（如 "github", "google"）
-
+    3: optional string goto          // 跳转地址
     255: optional base.Base Base
 }
 

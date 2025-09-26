@@ -4789,8 +4789,10 @@ type LoginByOAuthRequest struct {
 	// OAuth 授权码
 	Code *string `thrift:"code,1,optional" frugal:"1,optional,string" form:"code" json:"code,omitempty" query:"code"`
 	// OAuth 提供商（如 "github", "google"）
-	Provider *string    `thrift:"provider,2,optional" frugal:"2,optional,string" json:"provider,omitempty" path:"provider"`
-	Base     *base.Base `thrift:"Base,255,optional" frugal:"255,optional,base.Base" form:"Base" json:"Base,omitempty" query:"Base"`
+	Provider *string `thrift:"provider,2,optional" frugal:"2,optional,string" json:"provider,omitempty" path:"provider"`
+	// 跳转地址
+	Goto *string    `thrift:"goto,3,optional" frugal:"3,optional,string" form:"goto" json:"goto,omitempty" query:"goto"`
+	Base *base.Base `thrift:"Base,255,optional" frugal:"255,optional,base.Base" form:"Base" json:"Base,omitempty" query:"Base"`
 }
 
 func NewLoginByOAuthRequest() *LoginByOAuthRequest {
@@ -4824,6 +4826,18 @@ func (p *LoginByOAuthRequest) GetProvider() (v string) {
 	return *p.Provider
 }
 
+var LoginByOAuthRequest_Goto_DEFAULT string
+
+func (p *LoginByOAuthRequest) GetGoto() (v string) {
+	if p == nil {
+		return
+	}
+	if !p.IsSetGoto() {
+		return LoginByOAuthRequest_Goto_DEFAULT
+	}
+	return *p.Goto
+}
+
 var LoginByOAuthRequest_Base_DEFAULT *base.Base
 
 func (p *LoginByOAuthRequest) GetBase() (v *base.Base) {
@@ -4841,6 +4855,9 @@ func (p *LoginByOAuthRequest) SetCode(val *string) {
 func (p *LoginByOAuthRequest) SetProvider(val *string) {
 	p.Provider = val
 }
+func (p *LoginByOAuthRequest) SetGoto(val *string) {
+	p.Goto = val
+}
 func (p *LoginByOAuthRequest) SetBase(val *base.Base) {
 	p.Base = val
 }
@@ -4848,6 +4865,7 @@ func (p *LoginByOAuthRequest) SetBase(val *base.Base) {
 var fieldIDToName_LoginByOAuthRequest = map[int16]string{
 	1:   "code",
 	2:   "provider",
+	3:   "goto",
 	255: "Base",
 }
 
@@ -4857,6 +4875,10 @@ func (p *LoginByOAuthRequest) IsSetCode() bool {
 
 func (p *LoginByOAuthRequest) IsSetProvider() bool {
 	return p.Provider != nil
+}
+
+func (p *LoginByOAuthRequest) IsSetGoto() bool {
+	return p.Goto != nil
 }
 
 func (p *LoginByOAuthRequest) IsSetBase() bool {
@@ -4892,6 +4914,14 @@ func (p *LoginByOAuthRequest) Read(iprot thrift.TProtocol) (err error) {
 		case 2:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -4956,6 +4986,17 @@ func (p *LoginByOAuthRequest) ReadField2(iprot thrift.TProtocol) error {
 	p.Provider = _field
 	return nil
 }
+func (p *LoginByOAuthRequest) ReadField3(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Goto = _field
+	return nil
+}
 func (p *LoginByOAuthRequest) ReadField255(iprot thrift.TProtocol) error {
 	_field := base.NewBase()
 	if err := _field.Read(iprot); err != nil {
@@ -4977,6 +5018,10 @@ func (p *LoginByOAuthRequest) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField2(oprot); err != nil {
 			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
 			goto WriteFieldError
 		}
 		if err = p.writeField255(oprot); err != nil {
@@ -5037,6 +5082,24 @@ WriteFieldBeginError:
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
+func (p *LoginByOAuthRequest) writeField3(oprot thrift.TProtocol) (err error) {
+	if p.IsSetGoto() {
+		if err = oprot.WriteFieldBegin("goto", thrift.STRING, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.Goto); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
 func (p *LoginByOAuthRequest) writeField255(oprot thrift.TProtocol) (err error) {
 	if p.IsSetBase() {
 		if err = oprot.WriteFieldBegin("Base", thrift.STRUCT, 255); err != nil {
@@ -5076,6 +5139,9 @@ func (p *LoginByOAuthRequest) DeepEqual(ano *LoginByOAuthRequest) bool {
 	if !p.Field2DeepEqual(ano.Provider) {
 		return false
 	}
+	if !p.Field3DeepEqual(ano.Goto) {
+		return false
+	}
 	if !p.Field255DeepEqual(ano.Base) {
 		return false
 	}
@@ -5102,6 +5168,18 @@ func (p *LoginByOAuthRequest) Field2DeepEqual(src *string) bool {
 		return false
 	}
 	if strings.Compare(*p.Provider, *src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *LoginByOAuthRequest) Field3DeepEqual(src *string) bool {
+
+	if p.Goto == src {
+		return true
+	} else if p.Goto == nil || src == nil {
+		return false
+	}
+	if strings.Compare(*p.Goto, *src) != 0 {
 		return false
 	}
 	return true

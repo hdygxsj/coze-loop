@@ -3472,6 +3472,20 @@ func (p *LoginByOAuthRequest) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
+		case 3:
+			if fieldTypeId == thrift.STRING {
+				l, err = p.FastReadField3(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = thrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
 		case 255:
 			if fieldTypeId == thrift.STRUCT {
 				l, err = p.FastReadField255(buf[offset:])
@@ -3532,6 +3546,20 @@ func (p *LoginByOAuthRequest) FastReadField2(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *LoginByOAuthRequest) FastReadField3(buf []byte) (int, error) {
+	offset := 0
+
+	var _field *string
+	if v, l, err := thrift.Binary.ReadString(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+		_field = &v
+	}
+	p.Goto = _field
+	return offset, nil
+}
+
 func (p *LoginByOAuthRequest) FastReadField255(buf []byte) (int, error) {
 	offset := 0
 	_field := base.NewBase()
@@ -3553,6 +3581,7 @@ func (p *LoginByOAuthRequest) FastWriteNocopy(buf []byte, w thrift.NocopyWriter)
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], w)
 		offset += p.fastWriteField2(buf[offset:], w)
+		offset += p.fastWriteField3(buf[offset:], w)
 		offset += p.fastWriteField255(buf[offset:], w)
 	}
 	offset += thrift.Binary.WriteFieldStop(buf[offset:])
@@ -3564,6 +3593,7 @@ func (p *LoginByOAuthRequest) BLength() int {
 	if p != nil {
 		l += p.field1Length()
 		l += p.field2Length()
+		l += p.field3Length()
 		l += p.field255Length()
 	}
 	l += thrift.Binary.FieldStopLength()
@@ -3584,6 +3614,15 @@ func (p *LoginByOAuthRequest) fastWriteField2(buf []byte, w thrift.NocopyWriter)
 	if p.IsSetProvider() {
 		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRING, 2)
 		offset += thrift.Binary.WriteStringNocopy(buf[offset:], w, *p.Provider)
+	}
+	return offset
+}
+
+func (p *LoginByOAuthRequest) fastWriteField3(buf []byte, w thrift.NocopyWriter) int {
+	offset := 0
+	if p.IsSetGoto() {
+		offset += thrift.Binary.WriteFieldBegin(buf[offset:], thrift.STRING, 3)
+		offset += thrift.Binary.WriteStringNocopy(buf[offset:], w, *p.Goto)
 	}
 	return offset
 }
@@ -3611,6 +3650,15 @@ func (p *LoginByOAuthRequest) field2Length() int {
 	if p.IsSetProvider() {
 		l += thrift.Binary.FieldBeginLength()
 		l += thrift.Binary.StringLengthNocopy(*p.Provider)
+	}
+	return l
+}
+
+func (p *LoginByOAuthRequest) field3Length() int {
+	l := 0
+	if p.IsSetGoto() {
+		l += thrift.Binary.FieldBeginLength()
+		l += thrift.Binary.StringLengthNocopy(*p.Goto)
 	}
 	return l
 }
@@ -3644,6 +3692,14 @@ func (p *LoginByOAuthRequest) DeepCopy(s interface{}) error {
 			tmp = kutils.StringDeepCopy(*src.Provider)
 		}
 		p.Provider = &tmp
+	}
+
+	if src.Goto != nil {
+		var tmp string
+		if *src.Goto != "" {
+			tmp = kutils.StringDeepCopy(*src.Goto)
+		}
+		p.Goto = &tmp
 	}
 
 	var _base *base.Base

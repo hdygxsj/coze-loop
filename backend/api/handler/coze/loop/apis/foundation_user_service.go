@@ -129,6 +129,7 @@ func LoginByOAuth(ctx context.Context, c *app.RequestContext) {
 	code := c.Query("code")
 	logs.CtxInfo(ctx, "code: %s", code)
 	invokeAndRender(ctx, c, func(ctx context.Context, request *user.LoginByOAuthRequest, callOptions ...callopt.Option) (r *user.LoginByPasswordResponse, err error) {
+
 		provider := request.Provider
 		providers, done := loadProviders(ctx, c)
 		providerProperties := providers[*provider]
@@ -137,9 +138,11 @@ func LoginByOAuth(ctx context.Context, c *app.RequestContext) {
 		config := oauth2.Config{
 			ClientID:     *properties.ClientID,
 			ClientSecret: *properties.ClientSecret,
-			Endpoint:     oauth2.Endpoint{},
-			RedirectURL:  *properties.RedirectURL,
-			Scopes:       nil,
+			Endpoint: oauth2.Endpoint{
+				TokenURL: *properties.TokenURL,
+			},
+			RedirectURL: *properties.RedirectURL,
+			Scopes:      nil,
 		}
 		token, err := config.Exchange(ctx, *request.Code)
 		client := config.Client(ctx, token)
@@ -157,6 +160,9 @@ func LoginByOAuth(ctx context.Context, c *app.RequestContext) {
 		var userInfo UserInfo
 		if err := json.Unmarshal(body, &userInfo); err != nil {
 			return nil, fmt.Errorf("failed to unmarshal user info: %w", err)
+		}
+		if userInfo.Email == "" {
+			userInfo.Email = userInfo.Login + "@coze.io"
 		}
 		var password = "123456qwer!@#$"
 		registerRequest := &user.UserRegisterRequest{
@@ -183,7 +189,6 @@ func LoginByOAuth(ctx context.Context, c *app.RequestContext) {
 				protocol.CookieSameSiteDefaultMode,
 				false,
 				true)
-			c.Redirect(302, []byte(*providerProperties.RedirectURL))
 		}
 		return r, nil
 	})
